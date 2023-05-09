@@ -12,6 +12,7 @@ import sqlite3
 from fastapi import BackgroundTasks, File, UploadFile
 from starlette.datastructures import UploadFile as starletteUploadFile
 from fastapi.responses import StreamingResponse
+import singleton
 
 __author__ = "Tiago Prata"
 __credits__ = ["Tiago Prata"]
@@ -93,8 +94,14 @@ class FrameStreamer:
             str: Image converted (in Base64)
         """
         image_file = await file.read()
+        type_temp = type(image_file)
+        print(type_temp)
         return base64.b64encode(image_file).decode("utf-8")
 
+
+    async def _imagee_to_base64(self, image) -> str:
+        print('stop')
+        return 'stop'
 
 
     async def send_frame(self, stream_id: str, frame: Union[str, UploadFile, bytes]) -> None:
@@ -106,6 +113,7 @@ class FrameStreamer:
         """
 
         if isinstance(frame, str):
+            print('send_frame: ', frame)
             await self._store_image_str(stream_id, frame)
         elif isinstance(frame, starletteUploadFile):
             img_str = await self._image_file_to_base64(frame)
@@ -114,7 +122,22 @@ class FrameStreamer:
             img_str = base64.b64encode(frame).decode("utf-8")
             await self._store_image_str(stream_id, img_str)
 
+    def send_frame_(self, stream_id: str, frame: Union[str, UploadFile, bytes]) -> None:
+        """Send a frame to be streamed.
 
+        Args:
+            stream_id (str): ID (primary key) of the frame
+            frame (Union[str, UploadFile, bytes]): Frame (image) to be streamed.
+        """
+
+        if isinstance(frame, str):
+            self._store_image_str(stream_id, frame)
+        elif isinstance(frame, starletteUploadFile):
+            img_str = self._image_file_to_base64(frame)
+            self._store_image_str(stream_id, img_str)
+        elif isinstance(frame, bytes):
+            img_str = base64.b64encode(frame).decode("utf-8")
+            self._store_image_str(stream_id, img_str)
 
     def _readb64(self, encoded_img: str) -> Any:
         """Decode an image (in base64) to an OpenCV image

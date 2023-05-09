@@ -1,7 +1,8 @@
 import sys
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, BackgroundTasks
 import uvicorn
 from pydantic import BaseModel
+
 
 sys.path.append("./")
 from fastapi_frame_stream import FrameStreamer
@@ -34,4 +35,8 @@ async def video_feed(img_id: str):
 
 if __name__ == '__main__':
     # start the flask app
+    print('START fastAPI...')
     uvicorn.run(app, host="0.0.0.0", port=6064)
+
+
+
