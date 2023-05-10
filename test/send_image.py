@@ -11,20 +11,27 @@ from glob import glob
 import time
 import asyncio
 
-fs2 = FrameStreamer()
+
+si_fs = FrameStreamer()
 
 async def send_image():
     # iname = 'C:/PycharmProjects/fastapi-frame-stream/test/images/chessboard_01.png'
     # img = cv2.imread(iname, cv2.IMREAD_GRAYSCALE)
     img_mask = 'C:\\PycharmProjects\\fastapi-frame-stream\\test\\images\\chessboard_??.png'  # default
     img_names = glob(img_mask)
-    for x in range(0,200):
-        print(' X: ', x)
-        for fn in img_names:
-            await fs2.send_frame('img_stream', fn)
-            time.sleep(2)
+    while True:
+        for x in range(0,10):
+            print(' X: ', x)
+            for fn in img_names:
+                print('\n\n')
+                await si_fs.send_frame_file('img_stream', fn)
+                time.sleep(0)
+            time.sleep(0)
+        time.sleep(10)
     print('END')
+    time.sleep(30)
 
+"""
 print('START......')
 time.sleep(10)
 asyncio.run(send_image())
@@ -52,4 +59,4 @@ cv2.waitKey(0)
 # It is for removing/deleting created GUI window from screen
 # and memory
 cv2.destroyAllWindows()
-
+"""

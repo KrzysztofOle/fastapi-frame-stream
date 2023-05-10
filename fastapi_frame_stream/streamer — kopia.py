@@ -76,63 +76,15 @@ class FrameStreamer:
             img_id (str): ID (primary key) of the image.
             img_str_b64 (str): Image string (in base64)
         """
-        etap = 0
+
         try:
-            etap = 1
             self.conn = sqlite3.connect(SQLLITE_CONN_STR, uri=True)
-            etap = 2
-            c = None
-            for try_ in range(0, 5):
-                try:
-                    c = self.conn.cursor()
-                except sqlite3.OperationalError as err:
-                    print(err)
-                    print('failed, but we can try more time(s) n:', try_)
-                else:
-                    break
-            else:
-                # if we got here, then never reached 'break' statement
-                print('tried and tried, but never succeeded')
-                return
-
-            etap = 3
-
-            for try_ in range(0, 5):
-                try:
-                    c.execute("INSERT OR IGNORE INTO images VALUES (?,?)", (img_id, img_str_b64, ))
-                except sqlite3.OperationalError as err:
-                    print(err)
-                    print('failed, but we can try more time(s) n:', try_)
-                else:
-                    break
-            else:
-                # if we got here, then never reached 'break' statement
-                print('tried and tried, but never succeeded')
-                return
-
-
-            etap = 4
+            c = self.conn.cursor()
+            c.execute("INSERT OR IGNORE INTO images VALUES (?,?)", (img_id, img_str_b64, ))
             c.execute("UPDATE images SET image = (?) WHERE id = (?)", (img_str_b64, img_id, ))
-            etap = 5
             self.conn.commit()
-            etap = 6
-        except sqlite3.OperationalError as err:
-            print(err)
-            print('Error FrameStreamer:_store_image_str::  Oops! This was an operational error. Try again...')
-        except sqlite3.Error as err:
-            print(err)
-            print('Error FrameStreamer:_store_image_str::  Oops! This was an sqlite3.Error.   \t img_id:', img_id)
-        except NameError as err:
-            print(err)
-            print('Error FrameStreamer:_store_image_str::  Name Error')
-
-        except ValueError:
-            print('Error FrameStreamer:_store_image_str::  value error')
-
-        except IOError:
-            print('Error FrameStreamer:_store_image_str::  IO error')
         except:
-            print("Error FrameStreamer:_store_image_str.  \t img_id:", img_id)
+            print("Error FrameStreamer:_store_image_str.")
             pass
 
 
