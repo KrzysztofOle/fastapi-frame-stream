@@ -8,28 +8,50 @@ import sys
 sys.path.append("./")
 from fastapi_frame_stream import FrameStreamer
 from glob import glob
+
+import threading
 import time
 import asyncio
 
 
-si_fs = FrameStreamer()
+
 
 async def send_image():
+    si_fs = FrameStreamer()
+
     # iname = 'C:/PycharmProjects/fastapi-frame-stream/test/images/chessboard_01.png'
     # img = cv2.imread(iname, cv2.IMREAD_GRAYSCALE)
     img_mask = 'C:\\PycharmProjects\\fastapi-frame-stream\\test\\images\\chessboard_??.png'  # default
     img_names = glob(img_mask)
-    while True:
-        for x in range(0,10):
+    continued = True
+    while continued:
+        continued = False
+        for x in range(0,5):
             print(' X: ', x)
             for fn in img_names:
-                print('\n\n')
                 await si_fs.send_frame_file('img_stream', fn)
-                time.sleep(0)
+                time.sleep(1)
             time.sleep(0)
         time.sleep(10)
     print('END')
-    time.sleep(30)
+
+
+def sending_images():
+    print('START......')
+    time.sleep(10)
+    asyncio.run(send_image())
+    time.sleep(1)
+
+
+def run_test_sender():
+    # Created the Threads
+    th_send = threading.Thread(target=sending_images, daemon=True)
+    th_send.start()
+    th_send.join()
+    print('czekamy na koniec .............')
+    time.sleep(20)
+    print('.........    koniec')
+
 
 """
 print('START......')

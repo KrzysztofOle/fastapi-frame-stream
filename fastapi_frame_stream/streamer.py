@@ -44,7 +44,6 @@ class FrameStreamer:
             pass
 
 
-
     def _get_image(self, img_id: str) -> Union[str, None]:
         """Get an image from the SQLite DB.
 
