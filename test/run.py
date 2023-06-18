@@ -8,7 +8,7 @@ from send_image import *
 
 # run fastApi frame stream server
 main.run_server_fastApi()
-time.sleep(10)
+time.sleep(1)
 
 print('serwer uruchomiony')
 
