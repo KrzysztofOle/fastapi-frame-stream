@@ -21,7 +21,7 @@ async def send_image():
 
     # iname = 'C:/PycharmProjects/fastapi-frame-stream/test/images/chessboard_01.png'
     # img = cv2.imread(iname, cv2.IMREAD_GRAYSCALE)
-    img_mask = 'C:\\PycharmProjects\\fastapi-frame-stream\\test\\images\\chessboard_??.png'  # default
+    img_mask = 'images\\chessboard_??.png'  # default
     img_names = glob(img_mask)
     continued = True
     while continued:

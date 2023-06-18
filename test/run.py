@@ -24,9 +24,9 @@ print('after run_test_sender')
 
 # img_sender = ImageSender()
 
-test_send_image_file()
-print('\t http://localhost:63342/fastapi-frame-stream/test/test_iframe_all.html')
-time.sleep(30)
+# test_send_image_file()
+# print('\t http://localhost:63342/fastapi-frame-stream/test/test_iframe_all.html')
+# time.sleep(30)
 
 
 img_sender = ImageSender()
