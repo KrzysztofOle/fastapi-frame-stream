@@ -34,8 +34,4 @@ time.sleep(10)
 
 
 
-while True:
-    pass
-
-
 print('koniec')
